@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>دفتر متابعة اللغة العربية - الأستاذ إبراهيم أحمد متاش</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap');
+    body {
+      font-family: 'Cairo', Tahoma, Arial, sans-serif;
+      background: #f6f6f6;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 98vw;
+      margin: 18px auto;
+      background: #fff;
+      padding: 22px 10px;
+      border-radius: 15px;
+      box-shadow: 0 4px 16px #00000017;
+      position: relative;
+      border: 2.5px solid #198754;
+    }
+    .header-flex {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0;
+      gap: 12px;
+    }
+    .header-flex .teacher {
+      font-size: 22px;
+      color: #198754;
+      font-weight: bold;
+      white-space: nowrap;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 0 #bdf4c3;
+    }
+    .header-flex .month-box {
+      font-size: 19px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 700;
+      color: #194;
+    }
+    .header-flex .month-box input[type="text"] {
+      font-size: 17px;
+      width: 135px;
+      padding: 5px 10px;
+      border-radius: 7px;
+      border: 1.5px solid #198754;
+      text-align: right;
+      background: #f8f8f8;
+      font-weight: 700;
+    }
+    .class-row {
+      margin: 18px auto 16px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+    }
+    .class-row .class-label {
+      font-size: 19px;
+      color: #0d6efd;
+      font-weight: bold;
+      margin-left: 7px;
+      letter-spacing: 1px;
+    }
+    .class-row input[type="text"] {
+      font-size: 18px;
+      width: 320px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 2px solid #198754;
+      background: #fafdff;
+      text-align: right;
+      font-weight: bold;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .class-row .info {
+      font-size: 14px;
+      color: #b91c1c;
+      font-weight: bold;
+      margin-right: 14px;
+      display: none;
+    }
+    .class-row .info.active {
+      display: inline-block;
+      animation: fadeIn 0.6s;
+    }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+    h1 {
+      margin: 10px 0 18px 0;
+      text-align: center;
+      font-weight: 900;
+      font-size: 27px;
+      color: #198754;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 0 #d1e7dd;
+    }
+    .btns {
+      margin: 0 0 20px 0;
+      text-align: center;
+      gap: 12px;
+    }
+    .btns button {
+      font-size: 16px;
+      padding: 8px 28px;
+      margin: 0 6px;
+      border: 0;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #198754 80%, #1d8b6d 100%);
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+      box-shadow: 0 2px 10px #0000000a;
+    }
+    .btns button:hover {
+      background: linear-gradient(90deg, #13633b 80%, #1a6953 100%);
+    }
+    .btns .backup-btn {
+      background: #0d6efd;
+      margin-right: 8px;
+    }
+    .btns .backup-btn:hover {
+      background: #1552b5;
+    }
+    .btns .restore-btn {
+      background: #fbbf24;
+      color: #222;
+      margin-right: 2px;
+    }
+    .btns .restore-btn:hover {
+      background: #b98a13;
+      color: #fff;
+    }
+    .reset-btn {
+      background: #ef4444;
+      color: #fff;
+      margin-right: 10px;
+      font-weight: bold;
+      font-size: 15px;
+      border-radius: 8px;
+      padding: 8px 24px;
+      border: none;
+      cursor: pointer;
+      transition: 0.18s;
+      position: relative;
+      z-index: 2;
+    }
+    .reset-btn:hover {
+      background: #b91c1c;
+    }
+    table {
+      direction: rtl;
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      font-size: 13.2px;
+      margin-bottom: 14px;
+      page-break-inside: avoid;
+      box-shadow: 0 2px 10px #0001;
+    }
+    th, td {
+      border: 1px solid #198754;
+      padding: 3px 2px;
+      text-align: center;
+      font-size: 13px;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+    th {
+      background: linear-gradient(90deg, #d1e7dd 80%, #c4e7c7 100%);
+      color: #1d513a;
+      font-weight: 900;
+      font-size: 13.5px;
+      letter-spacing: 0.5px;
+    }
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+    .serial-cell {
+      color: #888;
+      font-weight: bold;
+      width: 24px;
+      min-width: 18px;
+      max-width: 28px;
+      text-align: center !important;
+    }
+    .student-name-cell input[type="text"] {
+      width: 330px !important;
+      min-width: 160px;
+      max-width: 600px;
+      font-size: 13.5px;
+      font-weight: bold;
+      padding: 3px 6px;
+      background: #f3f4f6;
+      border: 1.5px solid #198754;
+      border-radius: 7px;
+      direction: rtl;
+      text-align: right;
+    }
+    td input[type="number"] {
+      width: 32px !important;
+      min-width: 20px;
+      max-width: 38px;
+      font-size: 13px;
+      text-align: center;
+      border-radius: 6px;
+      border: 1px solid #198754;
+      background: #fafdff;
+    }
+    .written {
+      width: 44px !important;
+      max-width: 60px !important;
+      text-align: center;
+    }
+    .sum-cell {
+      font-size: 15px !important;
+      font-weight: bold;
+      background: #e0f2fe !important;
+      color: #0a3466 !important;
+      width: 38px !important;
+      min-width: 36px !important;
+      max-width: 46px !important;
+      letter-spacing: 0.5px;
+      border: 2px solid #1a856d;
+    }
+    .grade-estimate {
+      min-width: 48px !important;
+      max-width: 86px !important;
+    }
+    .note-cell textarea {
+      width: 110px !important;
+      min-width: 80px;
+      max-width: 160px;
+      height: 32px !important;
+      font-size: 12px;
+      padding: 3px 6px;
+      border-radius: 7px;
+      background: #f1f5f9;
+      border: 1.3px solid #bdbdbd;
+      direction: rtl;
+      resize: vertical;
+      text-align: center;
+    }
+    .note-head {
+      background: #fee2e2;
+      font-size: 13px;
+    }
+    .grade-badge {
+      font-weight: bold;
+      border-radius: 15px;
+      font-size: 12.5px;
+      padding: 2px 12px;
+      display: inline-block;
+      margin: 0 auto;
+      box-shadow: 0 1px 4px #19875422;
+    }
+    .badge-excellent    { background: #22d3ee; color: #055160;}
+    .badge-vgood        { background: #7ed957; color: #205800;}
+    .badge-good         { background: #fde047; color: #7d5900;}
+    .badge-acceptable   { background: #fbbf24; color: #7d4700;}
+    .badge-weak         { background: #ef4444; color: #fff;}
+    .grade-color-excellent    { background: #a7f3d0 !important; }
+    .grade-color-vgood        { background: #dbeafe !important; }
+    .grade-color-good         { background: #fef9c3 !important; }
+    .grade-color-acceptable   { background: #fde68a !important; }
+    .grade-color-weak         { background: #fee2e2 !important; }
+    .footer-bar {
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      background: #198754;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 8px 0 7px 0;
+      letter-spacing: 1px;
+      position: fixed;
+      bottom: 0; left: 0; z-index: 1;
+      border-top: 2px solid #23d39a;
+      box-shadow: 0 -2px 8px #23d39a22;
+    }
+    .modal-confirm-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 10001 !important;
+      background: rgba(0,0,0,0.17);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-confirm-box {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 2px 22px #0002;
+      padding: 33px 30px 24px 30px;
+      min-width: 310px;
+      max-width: 96vw;
+      text-align: center;
+      font-family: 'Cairo', Tahoma, Arial, sans-serif;
+      position: relative;
+      z-index: 10002 !important;
+    }
+    .modal-confirm-box h2 {
+      font-size: 20px;
+      color: #b91c1c;
+      margin-bottom: 14px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .modal-confirm-box .modal-msg {
+      font-size: 15px;
+      color: #222;
+      margin-bottom: 17px;
+      font-weight: normal;
+    }
+    .modal-confirm-box button {
+      font-size: 15px;
+      padding: 6px 28px;
+      border-radius: 8px;
+      margin: 0 8px;
+      font-weight: bold;
+      outline: none;
+      border: 0;
+      cursor: pointer;
+      transition: 0.16s;
+    }
+    .modal-confirm-box .yes { background: #198754; color: #fff; }
+    .modal-confirm-box .yes:hover { background: #14563e;}
+    .modal-confirm-box .no { background: #fbbf24; color: #444;}
+    .modal-confirm-box .no:hover { background: #b98a13; color: #fff;}
+    .watermark {
+      display: none;
+    }
+    .chart-section {
+      margin: 20px 0 0 0;
+      text-align: center;
+      width: 100%;
+    }
+    .chart-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #curveChart {
+      max-width: 350px;
+      max-height: 140px;
+      background: #fafdff;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px #19875422;
+      margin: 0 auto;
+    }
+    @media print {
+      table {
+        font-size: 10.5px !important;
+        table-layout: auto !important;
+      }
+      th, td {
+        word-break: break-word !important;
+        overflow: hidden !important;
+        white-space: normal !important;
+        padding: 2px 2px !important;
+        text-align: center !important;
+        vertical-align: middle !important;
+      }
+      th.student-name-cell, td.student-name-cell {
+        width: 38% !important;
+        min-width: 200px !important;
+        max-width: 520px !important;
+        text-align: right !important;
+        font-size: 12.5px !important;
+      }
+      th.serial-cell, td.serial-cell {
+        width: 4% !important;
+        min-width: 16px !important;
+        max-width: 28px !important;
+      }
+      th.sum-cell, td.sum-cell,
+      th.grade-estimate, td.grade-estimate {
+        width: 38px !important;
+        min-width: 36px !important;
+        max-width: 86px !important;
+      }
+      th:not(.student-name-cell):not(.serial-cell):not(.sum-cell):not(.grade-estimate),
+      td:not(.student-name-cell):not(.serial-cell):not(.sum-cell):not(.grade-estimate) {
+        width: 3.5% !important;
+        min-width: 19px !important;
+        max-width: 44px !important;
+      }
+      td input, td textarea {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        background: #fff !important;
+        border: none !important;
+        font-size: 10.5px !important;
+        text-align: center !important;
+      }
+      body, .container { background: #fff !important; }
+      .btns, .header-flex, .reset-btn, .footer-bar { display: none !important; }
+      .class-row { margin-top: 0; margin-bottom: 10px;}
+      input, textarea { border: none !important; background: #fff !important; }
+      .page-break { display: block; page-break-after: always; }
+      .print-header { display: table-header-group !important; }
+      .print-footer { display: table-footer-group !important; }
+      .watermark {
+        display: block !important;
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0.23;
+        font-size: 28px;
+        color: #198754;
+        z-index: 9999;
+        font-weight: bold;
+        pointer-events: none;
+        width: 100vw;
+        text-align: center;
+      }
+      #curveChartSection { 
+        display: block !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        background: #fff !important;
+        page-break-after: avoid;
+      }
+      #curveChart {
+        max-width: 340px !important;
+        max-height: 120px !important;
+        margin: 0 auto !important;
+        display: block !important;
+      }
+      @page {
+        size: A4 landscape;
+        margin: 7mm 7mm 7mm 7mm;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-box">
+    <h2>نموذج محمي<br>يرجى إدخال كلمة المرور</h2>
+    <input type="password" id="lockPass" placeholder="كلمة المرور..." autocomplete="off" onkeydown="if(event.key==='Enter'){unlock()}" />
+    <br>
+    <button onclick="unlock()">دخول</button>
+    <div class="lock-error" id="lockError"></div>
+    <div style="margin-top:11px;font-size:13px;color:#555;">جميع الحقوق محفوظة للأستاذ إبراهيم أحمد متاش</div>
+  </div>
+</div>
+<div id="mainApp" style="display:none">
+  <div class="container">
+    <div class="header-flex">
+      <div class="teacher">دفتر متابعة اللغة العربية - الأستاذ إبراهيم أحمد متاش</div>
+      <div class="month-box">
+        الشهر:
+        <input type="text" id="monthName" placeholder="مثال: مارس 2025" />
+      </div>
+    </div>
+    <div class="class-row">
+      <span class="class-label">الصف:</span>
+      <input type="text" id="className" placeholder="مثال: الصف السابع" oninput="onClassNameInput()" />
+      <span class="info" id="classWarning"></span>
+      <button class="reset-btn" onclick="resetAllData()" title="بدء جديد (حذف جميع البيانات)">بدء جديد</button>
+    </div>
+    <h1>متابعة تصحيح دفاتر الطلاب لمادة اللغة العربية</h1>
+    <div class="btns">
+      <button onclick="calculateTotals();">احتسب الدرجات</button>
+      <button onclick="exportPdf()">تصدير PDF</button>
+      <button onclick="exportTableToExcel('gradesTableContainer','دفتر تصحيح اللغة العربية')">تصدير Excel</button>
+      <button onclick="addRow()">إضافة طالب</button>
+      <button class="backup-btn" onclick="exportBackup()">حفظ نسخة احتياطية</button>
+      <input type="file" id="importBackupInput" style="display:none" onchange="importBackup(event)">
+      <button class="restore-btn" onclick="document.getElementById('importBackupInput').click()">استيراد نسخة احتياطية</button>
+    </div>
+    <div id="gradesTableContainer"></div>
+    <div class="chart-section" id="curveChartSection" style="margin:18px auto 0 auto; text-align:center;">
+      <h2 style="font-size:14px;color:#0d6efd;margin-bottom:6px;">منحنى تركز الدرجات الأعلى للطلاب</h2>
+      <div class="chart-container" style="display:flex;justify-content:center;">
+        <canvas id="curveChart" style="max-width:350px;max-height:140px;background:#fafdff;border-radius:10px;box-shadow:0 1px 4px #19875422;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bar">
+    جميع الحقوق محفوظة © للأستاذ إبراهيم أحمد متاش - لا يجوز إعادة النشر أو التعديل إلا بإذن خطي
+  </div>
+  <div class="watermark">تصميم الأستاذ إبراهيم أحمد متاش</div>
+</div>
+<div id="modalConfirmRoot"></div>
+<script>
+const PASSWORD = "arabicgrade2025";
+function unlock() {
+  let pass = document.getElementById('lockPass').value.trim();
+  let err = document.getElementById('lockError');
+  if(pass === PASSWORD) {
+    document.getElementById('lockScreen').style.display = 'none';
+    document.getElementById('mainApp').style.display = '';
+    document.body.style.overflow = '';
+    setTimeout(()=>{document.getElementById('className').focus()},200);
+  } else {
+    err.innerText = "كلمة المرور غير صحيحة!";
+    document.getElementById('lockPass').value = '';
+  }
+}
+window.addEventListener('DOMContentLoaded', ()=>{
+  document.getElementById('lockPass').focus();
+  document.body.style.overflow = 'hidden';
+});
+
+function showConfirmModal(title, message, onConfirm) {
+  let root = document.getElementById("modalConfirmRoot");
+  root.innerHTML = '';
+  let modal = document.createElement("div");
+  modal.className = "modal-confirm-bg";
+  modal.innerHTML = `<div class="modal-confirm-box">
+    <h2>${title}</h2>
+    <div class="modal-msg">${message}</div>
+    <button class="yes">موافق</button>
+    <button class="no">إلغاء</button>
+  </div>`;
+  modal.querySelector('.yes').onclick = function() {
+    root.innerHTML = '';
+    onConfirm();
+  };
+  modal.querySelector('.no').onclick = function() {
+    root.innerHTML = '';
+  };
+  root.appendChild(modal);
+}
+
+let studentRows = [];
+const ROWS_PER_PAGE = 20;
+const baseDistributions = {
+  "السابع": { act2_1: 2, act2_2: 2, reading: 2, memorize: 2, act5: 5, hw: [4,4,4,4], handwriting: 4, dictation: 4, written: 60 },
+  "الثامن": { act2_1: 2, act2_2: 2, reading: 2, memorize: 2, act5: 5, hw: [4,4,4,4], handwriting: 4, dictation: 4, written: 60 },
+  "التاسع": { act2_1: 1, act2_2: 1, reading: 2, memorize: 2, act5: 3, hw: [3,3,3,3], handwriting: 3, dictation: 4, written: 70 }
+};
+function getCurrentDistribution() {
+  const className = (document.getElementById('className').value || '').trim();
+  if (className.includes('تاسع')) return {...baseDistributions["التاسع"]};
+  if (className.includes('ثامن')) return {...baseDistributions["الثامن"]};
+  if (className.includes('سابع')) return {...baseDistributions["السابع"]};
+  return {...baseDistributions["السابع"]};
+}
+function getAdjustedDistribution() {
+  let dist = getCurrentDistribution();
+  let total = dist.act2_1 + dist.act2_2 + dist.reading + dist.memorize + dist.act5 + dist.hw.reduce((a,b)=>a+b,0) + dist.handwriting + dist.dictation + dist.written;
+  let written10 = Math.floor(dist.written / 10) * 10;
+  let diff = dist.written - written10;
+  let act5 = dist.act5 + diff + (100 - (total - dist.written + written10));
+  return {
+    ...dist,
+    written: written10,
+    act5: parseFloat(act5.toFixed(2))
+  };
+}
+let currentClassKey = "";
+function onClassNameInput() {
+  const classInput = document.getElementById('className');
+  const classWarning = document.getElementById('classWarning');
+  const newKey =
+    classInput.value.includes('تاسع') ? "التاسع" :
+    classInput.value.includes('ثامن') ? "الثامن" :
+    classInput.value.includes('سابع') ? "السابع" : "default";
+  if (currentClassKey && currentClassKey !== newKey && studentRows.length > 0) {
+    classInput.classList.add('pending-warning');
+    classWarning.innerText = "تنبيه: تغيير الصف سيغير توزيع الدرجات، وقد يسبب اختلاف في بيانات الطلاب الحالية. هل تريد المتابعة؟";
+    classWarning.classList.add('active');
+    showConfirmModal(
+      "تغيير الصف",
+      "سيتم تغيير توزيع الدرجات وفقًا للصف الجديد، وقد تتعرض بيانات الطلاب الحالية للخلط أو فقدان بعض القيم. هل ترغب بالمتابعة؟",
+      function() {
+        currentClassKey = newKey;
+        classInput.classList.remove('pending-warning');
+        classWarning.innerText = "";
+        classWarning.classList.remove('active');
+        renderTablePages();
+        calculateTotals();
+        saveTableToStorage();
+      }
+    );
+  } else {
+    currentClassKey = newKey;
+    classInput.classList.remove('pending-warning');
+    classWarning.innerText = "";
+    classWarning.classList.remove('active');
+    renderTablePages();
+    calculateTotals();
+    saveTableToStorage();
+  }
+}
+
+function renderTablePages() {
+  const gradesTableContainer = document.getElementById('gradesTableContainer');
+  gradesTableContainer.innerHTML = '';
+  let n = studentRows.length;
+  let pages = Math.ceil(n / ROWS_PER_PAGE);
+  const dist = getAdjustedDistribution();
+
+  function tdDist(val, fallback) {
+    return `<span style="font-size:11px;color:#0d6efd;">(${val || fallback})</span>`;
+  }
+  for (let p = 0; p < pages; p++) {
+    let start = p * ROWS_PER_PAGE;
+    let end = Math.min((p + 1) * ROWS_PER_PAGE, n);
+    let table = document.createElement('table');
+    table.id = (p === 0 ? "gradesTable" : "");
+    table.innerHTML = `
+      <thead class="${p === 0 ? 'print-header' : ''}">
+        <tr>
+          <th class="serial-cell">م</th>
+          <th class="student-name-cell" rowspan="2" style="background:#d1e7dd;min-width:180px;max-width:400px;">اسم الطالب الرباعي</th>
+          <th colspan="2">نشاط ${tdDist(dist.act2_1,2)+tdDist(dist.act2_2,2)}</th>
+          <th>قراءة ${tdDist(dist.reading,2)}</th>
+          <th>تسميع ${tdDist(dist.memorize,2)}</th>
+          <th>نش.صفي ${tdDist(dist.act5,5)}</th>
+          <th colspan="4">واجب ${tdDist(dist.hw
